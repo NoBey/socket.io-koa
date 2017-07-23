@@ -3,14 +3,19 @@ import io from 'socket.io-client';
 
 const socket = io('http://localhost:3000');
 
-console.log('init');
+var sss = document.getElementById('sss')
+var bt = document.getElementById('bt')
 
-socket.on('connect', onConnect);
-socket.on('oo',function(...s){
-  console.log(s)
+socket.on('connect', function onConnect(data){
+  console.log(data)
 });
 
+socket.on('update',function(data){
+  console.log(data)
+  sss.innerHTML = data.map(a => '<h1>'+a+'</h1>')
+});
 
-function onConnect(){
-  console.log('connect9  ' + socket.id);
+bt.onclick = function(){
+  console.log('del--'+document.querySelector('h1').innerText)
+  socket.emit('del',document.querySelector('h1').innerText)
 }
