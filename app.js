@@ -5,9 +5,7 @@ const app = new Koa()
 const io = new IO()
 
 // app.use( ... )
-
-var l = []
-remove = (i, list) => list.filter(a =>a.id!=i)
+const list = {}
 
 io.attach( app )
 io.use( async ( ctx, next ) => {
@@ -19,23 +17,28 @@ io.use( async ( ctx, next ) => {
 
 io.on( 'connection', ctx => {
   console.log( '连接', ctx.socket.id )
-  l.push({id:ctx.socket.id,socket:ctx.socket})
-  io.broadcast('update', l.map(a=>a.id))
-  console.log('当前用户人数：'+l.length+'---'+l)
+  console.log('当前用户人数：'+'---')
+  console.log(list)
+})
+var ii = 0
+io.on( 'join', (ctx, id) => {
+  ii++
+  list[ii] = ctx.socket
 })
 
 io.on( 'disconnect', ctx => {
   console.log( '断开连接', ctx.socket.id )
-  l = remove(ctx.socket.id, l)
-  io.broadcast('update', l)
-  console.log('当前用户人数：'+l.length+'---'+l)
+  console.log('当前用户人数：'+'---')
+  for (var k in list) {
+    if(list[k].id == ctx.socket.id){
+      delete list[k]
+    }
+  }
+  console.log(list)
+
 })
-io.on( 'del', ( ctx, data ) => {
-  console.log( '删除连接', data )
-  l = remove(data, l)
-  io.broadcast('update', l)
-  io.connections.get('')
-  console.log('当前用户人数：'+l.length+'---'+l)
+io.on( 'del', ( ctx ) => {
+
 })
 
 

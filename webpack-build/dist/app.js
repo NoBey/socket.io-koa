@@ -3458,9 +3458,9 @@ const socket = __WEBPACK_IMPORTED_MODULE_0_socket_io_client___default()('http://
 
 var sss = document.getElementById('sss')
 var bt = document.getElementById('bt')
-
+var i = 1;
 socket.on('connect', function onConnect(data){
-  console.log(data)
+socket.emit('join', i++)
 });
 
 socket.on('update',function(data){

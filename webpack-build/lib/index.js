@@ -5,9 +5,9 @@ const socket = io('http://localhost:3000');
 
 var sss = document.getElementById('sss')
 var bt = document.getElementById('bt')
-
+var i = 1;
 socket.on('connect', function onConnect(data){
-  console.log(data)
+socket.emit('join')
 });
 
 socket.on('update',function(data){
